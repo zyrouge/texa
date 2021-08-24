@@ -8,7 +8,7 @@ layout: page
 </p>
 
 <p style="text-align: center;">
-    ⚡ Lightweight static site generator with SSR!
+    ⚡ Lightweight static site generator with SSR support!
 </p>
 
 <div style="margin: 2rem 0 4rem 0; display: flex; justify-content: center; gap: 0.5rem;">
