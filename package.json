@@ -10,7 +10,7 @@
         "build": "tsc",
         "docs:dev": "ts-node ./docs",
         "docs:build": "ts-node ./docs/build",
-        "docs:api": "typedoc --out ./docs/static/api ./lib"
+        "docs:api": "rimraf ./docs/static/api && typedoc --out ./docs/static/api ./lib"
     },
     "keywords": [],
     "author": "Zyrouge",
@@ -22,6 +22,7 @@
         "@types/marked": "^2.0.5",
         "@types/mime-types": "^2.1.1",
         "@types/node": "^16.7.1",
+        "rimraf": "^3.0.2",
         "ts-node": "^10.2.1",
         "typedoc": "^0.21.6",
         "typescript": "^4.3.5"
