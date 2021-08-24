@@ -1,14 +1,14 @@
 import http from "http";
 import { join, extname } from "path";
 import chokidar from "chokidar";
-import fs from "fs-extra";
+import { createReadStream } from "fs-extra";
 import mime from "mime-types";
 import socket from "socket.io";
 import { Config } from "./config";
 import { Renderer } from "./renderer";
 import { attachSocketClient } from "./helpers/attachSocketClient";
 import { TexaEventEmitter, TexaEventSkeleton } from "./helpers/eventer";
-import { fileExists } from "./helpers/fileExists";
+import { tryResolveFilePath } from "./helpers/tryResolveFilePath";
 
 export interface TexaServerMiddlewareEvents extends TexaEventSkeleton {
     refresh: (cause: string, path: string) => void;
@@ -52,9 +52,11 @@ export class TexaServerMiddleware extends TexaEventEmitter<TexaServerMiddlewareE
                 this.options.socket = new socket.Server(this.options.server);
             }
 
-            this.options.chokidar!.on("all", (event, path) => {
-                this.options.socket!.emit("refresh");
-                this.dispatch("refresh", event, path);
+            this.options.chokidar!.on("ready", () => {
+                this.options.chokidar!.on("all", (event, path) => {
+                    this.options.socket!.emit("refresh");
+                    this.dispatch("refresh", event, path);
+                });
             });
         }
     }
@@ -64,24 +66,34 @@ export class TexaServerMiddleware extends TexaEventEmitter<TexaServerMiddlewareE
         res: http.ServerResponse
     ): Promise<boolean> {
         if (req.url) {
-            let path = join(this.config.contents, req.url.slice(1));
-            if (!extname(path)) {
-                path += this.config.defaultLayoutsExtension;
+            let _cPath = join(this.config.contents, req.url),
+                _cExt = extname(_cPath);
+
+            if ([".html", ".md"].includes(_cExt)) {
+                _cPath = _cPath.slice(0, -_cExt.length);
             }
 
-            const mded = path.replace(/\.html$/, ".md");
-            if (await fileExists(mded)) {
-                path = mded;
-            }
+            const path = await tryResolveFilePath(
+                _cPath,
+                [".html", ".md"],
+                ["index"]
+            );
 
-            let exists = await fileExists(path);
-            if (exists) {
+            if (path) {
                 const ext = extname(path);
                 let html: string | undefined;
-                if (ext === ".md") {
-                    html = await Renderer.md(path, this.config, {});
-                } else if (ext === ".html") {
-                    html = await Renderer.html(path, this.config, {});
+
+                switch (ext) {
+                    case ".md":
+                        html = await Renderer.md(path, this.config, {});
+                        break;
+
+                    case ".html":
+                        html = await Renderer.html(path, this.config, {});
+                        break;
+
+                    default:
+                        break;
                 }
 
                 if (html) {
@@ -95,16 +107,19 @@ export class TexaServerMiddleware extends TexaEventEmitter<TexaServerMiddlewareE
                 }
             }
 
-            path = path.replace(this.config.contents, this.config.public);
-            exists = await fileExists(path);
-            if (exists) {
+            const staticPath = await tryResolveFilePath(
+                join(this.config.public, req.url),
+                [".html"],
+                ["index"]
+            );
+            if (staticPath) {
                 res.writeHead(200, {
                     "Content-Type":
-                        mime.lookup(extname(path)) ||
+                        mime.lookup(extname(staticPath)) ||
                         "application/octet-stream",
                 });
 
-                fs.createReadStream(path).pipe(res);
+                createReadStream(staticPath).pipe(res);
                 return true;
             }
         }

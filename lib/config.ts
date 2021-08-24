@@ -12,7 +12,6 @@ export interface Config {
     layouts: string;
     contents: string;
     define: Record<any, any>;
-    defaultLayoutsExtension: string;
     outputDir: string;
     hooks: Partial<Hooks>;
 }
@@ -24,7 +23,6 @@ export const defaultConfig: Config = {
     layouts: "./layouts",
     contents: "./contents",
     define: {},
-    defaultLayoutsExtension: ".html",
     outputDir: "./dist",
     hooks: {},
 };

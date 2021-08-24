@@ -1,6 +1,6 @@
-import { access, constants } from "fs-extra";
+import { access, constants, stat } from "fs-extra";
 
 export const fileExists = async (path: string): Promise<boolean> =>
-    access(path, constants.F_OK)
+    (await access(path, constants.F_OK)
         .then(() => true)
-        .catch(() => false);
+        .catch(() => false)) && (await stat(path)).isFile();

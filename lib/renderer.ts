@@ -1,9 +1,9 @@
-import { isAbsolute, extname, join } from "path";
+import { isAbsolute, join } from "path";
 import ejs from "ejs";
 import graymatter from "gray-matter";
 import marked from "marked";
 import { Config } from "./config";
-import { fileExists } from "./helpers/fileExists";
+import { tryResolveFilePath } from "./helpers/tryResolveFilePath";
 
 export type RenderDataParam = Record<any, any>;
 
@@ -57,16 +57,17 @@ export class Renderer {
             throw new Error(`Missing or invalid 'layout' in '${path}'`);
         }
 
-        let layout = isAbsolute(parsed.data.layout)
+        const layout = isAbsolute(parsed.data.layout)
             ? parsed.data.layout
-            : join(config.layouts, parsed.data.layout);
-
-        if (!extname(layout)) {
-            layout += config.defaultLayoutsExtension;
-        }
-
-        if (!(await fileExists(layout))) {
-            throw new Error(`Unknown layout '${layout}' in '${path}'`);
+            : await tryResolveFilePath(
+                  join(config.layouts, parsed.data.layout),
+                  [".html", ".ejs"],
+                  []
+              );
+        if (!layout) {
+            throw new Error(
+                `Unknown layout '${parsed.data.layout}' in '${path}'`
+            );
         }
 
         return this.html(layout, config, data as RenderDataMd);

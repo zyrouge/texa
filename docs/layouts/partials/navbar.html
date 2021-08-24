@@ -2,10 +2,10 @@
     <a class="h2 thick" href="<%= base %>index">Texa</a>
 
     <div>        
-        <% navLinks.forEach(([text, href]) => { %>
-            <a class="h5 thick" href="<%= base %><%= href %>"><%= text %></a>
+        <% navLinks.forEach(([text, href, blank]) => { %>
+            <a target="<%= blank ? "_blank" : "_self" %>" class="h5 thick" href="<%= base %><%= href %>"><%= text %></a>
         <% }); %>
     </div>
 </nav>
 
-<hr style="margin: 0 5rem;">
+<hr class="spaced-hr">

@@ -11,7 +11,7 @@ layout: page
     ⚡ Lightweight static site generator with SSR support!
 </p>
 
-<div style="margin: 2rem 0 4rem 0; display: flex; justify-content: center; gap: 0.5rem;">
+<div class="resp-flex gap-sm" style="margin: 2rem 0 4rem 0;">
     <a href="<% base %>installation" class="h6 bold button">Get Started</a>
     <a href="<% base %>api/index" class="h6 bold button">API Documentation</a>
 </div>

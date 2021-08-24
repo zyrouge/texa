@@ -8,8 +8,8 @@ export default defineConfig({
         webURL: "https://zyrouge.github.io/texa/",
         author: "Zyrouge",
         navLinks: [
-            ["Home", "index"],
-            ["API", "api/index"],
+            ["API", "api/index", true],
+            ["GitHub", "https://github.com/zyrouge/texa", true],
         ],
     },
 });
