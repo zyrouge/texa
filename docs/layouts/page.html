@@ -9,6 +9,10 @@
         <%- include("./partials/head.html") %>
     </head>
     <body>
-        <div style="padding: 2rem 4rem"><%- content %></div>
+        <%- include("./partials/navbar.html") %>
+        
+        <main>
+            <%- content %>
+        </main>
     </body>
 </html>

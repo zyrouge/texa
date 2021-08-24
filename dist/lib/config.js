@@ -15,10 +15,6 @@ exports.defaultConfig = {
     define: {},
     defaultLayoutsExtension: ".html",
     outputDir: "./dist",
-    server: {
-        host: "localhost",
-        port: 6500,
-    },
     hooks: {},
 };
 const defineConfig = (config) => {

@@ -10,10 +10,6 @@ export interface Config {
     define: Record<any, any>;
     defaultLayoutsExtension: string;
     outputDir: string;
-    server: {
-        host: string;
-        port: number;
-    };
     hooks: Partial<Hooks>;
 }
 export declare const defaultConfig: Config;

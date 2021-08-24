@@ -47,7 +47,7 @@ class Renderer {
                 ? parsed.data.layout
                 : path_1.join(config.layouts, parsed.data.layout);
             if (!path_1.extname(layout)) {
-                layout += ".html";
+                layout += config.defaultLayoutsExtension;
             }
             if (!(yield fileExists_1.fileExists(layout))) {
                 throw new Error(`Unknown layout '${layout}' in '${path}'`);
