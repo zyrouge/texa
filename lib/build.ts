@@ -2,49 +2,69 @@ import fs from "fs-extra";
 import { dirname, join, extname } from "path";
 import { Config } from "./config";
 import { Renderer } from "./renderer";
+import { TexaEventEmitter, TexaEventSkeleton } from "./helpers/eventer";
 
-export const file = async (path: string, config: Config): Promise<void> => {
-    const ext = extname(path);
-    const out = path.replace(config.contents, config.outputDir);
+export interface TexaBuilderEvents extends TexaEventSkeleton {
+    folder: (path: string) => void;
+    file: (path: string) => void;
+}
 
-    await fs.ensureDir(dirname(out));
-    switch (ext) {
-        case ".html": {
-            const rendered = await Renderer.html(path, config, {});
-            await fs.writeFile(out, rendered);
-            break;
-        }
+export class TexaBuilder extends TexaEventEmitter<TexaBuilderEvents> {
+    config: Config;
 
-        case ".md": {
-            const rendered = await Renderer.md(path, config, {});
-            await fs.writeFile(out.replace(/\.md/, ".html"), rendered);
-            break;
-        }
+    constructor(config: Config) {
+        super();
 
-        default:
-            await fs.copyFile(path, out);
-            break;
+        this.config = config;
     }
-};
 
-export const folder = async (path: string, config: Config): Promise<void> => {
-    for (const name of await fs.readdir(path)) {
-        const p = join(path, name);
-        const lstat = await fs.lstat(p);
+    async file(path: string): Promise<void> {
+        this.dispatch("file", path);
 
-        if (lstat.isFile()) {
-            await file(p, config);
-        } else {
-            await folder(p, config);
+        const ext = extname(path);
+        const out = path.replace(this.config.contents, this.config.outputDir);
+
+        await fs.ensureDir(dirname(out));
+        switch (ext) {
+            case ".html": {
+                const rendered = await Renderer.html(path, this.config, {});
+                await fs.writeFile(out, rendered);
+                break;
+            }
+
+            case ".md": {
+                const rendered = await Renderer.md(path, this.config, {});
+                await fs.writeFile(out.replace(/\.md/, ".html"), rendered);
+                break;
+            }
+
+            default:
+                await fs.copyFile(path, out);
+                break;
         }
     }
-};
 
-export const build = async (config: Config): Promise<void> => {
-    await fs.rm(config.outputDir, {
-        recursive: true,
-        force: true,
-    });
+    async folder(path: string): Promise<void> {
+        this.dispatch("folder", path);
 
-    await folder(config.contents, config);
-};
+        for (const name of await fs.readdir(path)) {
+            const p = join(path, name);
+            const lstat = await fs.lstat(p);
+
+            if (lstat.isFile()) {
+                await this.file(p);
+            } else {
+                await this.folder(p);
+            }
+        }
+    }
+
+    async start(): Promise<void> {
+        await fs.rm(this.config.outputDir, {
+            recursive: true,
+            force: true,
+        });
+
+        await this.folder(this.config.contents);
+    }
+}

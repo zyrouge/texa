@@ -8,6 +8,7 @@ import { fileExists } from "./helpers/fileExists";
 export type RenderDataParam = Record<any, any>;
 
 export type RenderDataHtml = {
+    base: string;
     define: Record<any, any>;
 } & RenderDataParam;
 
@@ -22,7 +23,10 @@ export class Renderer {
         config: Config,
         data: RenderDataParam
     ): Promise<string> {
-        Object.assign(data, config.define);
+        Object.assign(data, {
+            base: config.base,
+            ...config.define,
+        });
 
         let html = await ejs.renderFile(path, data as RenderDataHtml, {
             root: config.root,
@@ -58,7 +62,7 @@ export class Renderer {
             : join(config.layouts, parsed.data.layout);
 
         if (!extname(layout)) {
-            layout += ".html";
+            layout += config.defaultLayoutsExtension;
         }
 
         if (!(await fileExists(layout))) {
