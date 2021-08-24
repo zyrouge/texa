@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "module": "commonjs",
+        "declaration": true,
+        "outDir": "./dist",
+        "rootDir": "./",
+        "strict": true,
+        "strictNullChecks": true,
+        "noUnusedLocals": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUncheckedIndexedAccess": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "noImplicitReturns": true,
+        "noImplicitAny": true
+    },
+    "include": ["./lib/**/*"]
+}
