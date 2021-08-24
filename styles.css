@@ -87,11 +87,28 @@ a:hover {
 
 button,
 .button {
+    position: relative;
     background-color: var(--primary);
     color: var(--alt-text);
     border: none;
     padding: 0.5rem 1.4rem;
     border-radius: var(--radius);
+    transition: var(--duration);
+    overflow: hidden;
+    z-index: 1;
+}
+
+button::after,
+.button::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    background-color: var(--primary-dark);
+    transform: translateY(100%);
+    z-index: -1;
     transition: var(--duration);
 }
 
@@ -99,8 +116,11 @@ button:hover,
 .button:hover {
     cursor: pointer;
     color: var(--alt-text);
-    transform: translateY(-0.2rem);
-    background-color: var(--primary-dark);
+}
+
+button:hover::after,
+.button:hover::after {
+    transform: translateY(0);
 }
 
 li > p {
