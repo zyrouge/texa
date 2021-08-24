@@ -6,12 +6,24 @@
     --radius: 0.25rem;
     --duration: 0.3s;
 
-    --h1: 2.5rem;
-    --h2: 2rem;
-    --h3: 1.75rem;
-    --h4: 1.5rem;
-    --h5: 1.3rem;
-    --h6: 1.1rem;
+    --h1: 2rem;
+    --h2: 1.75rem;
+    --h3: 1.5rem;
+    --h4: 1.3rem;
+    --h5: 1.15rem;
+    --h6: 1rem;
+    --small: 0.7rem;
+}
+
+@media screen and (min-width: 768px) {
+    :root {
+        --h1: 2.5rem;
+        --h2: 2rem;
+        --h3: 1.75rem;
+        --h4: 1.5rem;
+        --h5: 1.3rem;
+        --h6: 1.1rem;
+    }
 }
 
 body {
@@ -71,7 +83,9 @@ h5,
 h6,
 .h6,
 p,
-a {
+a,
+pre,
+code {
     font-size: var(--h6);
 }
 
@@ -142,7 +156,7 @@ code {
 
 code::after {
     position: absolute;
-    font-size: 0.7rem;
+    font-size: var(--small);
     top: 0.5rem;
     right: 0.5rem;
     opacity: 0.8;
@@ -172,5 +186,38 @@ hr {
 }
 
 main {
-    margin: 3rem 5rem 4rem 5rem;
+    margin: 3rem 1.5rem 4rem 1.5rem;
+}
+
+.resp-flex {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.gap-sm {
+    gap: 0.1rem;
+}
+
+.spaced-hr {
+    margin: 0 1.5rem;
+}
+
+@media screen and (min-width: 768px) {
+    main {
+        margin: 3rem 5rem 4rem 5rem;
+    }
+
+    .resp-flex {
+        flex-direction: row;
+    }
+
+    .gap-sm {
+        gap: 0.5rem;
+    }
+
+    .spaced-hr {
+        margin: 0 5rem;
+    }
 }
