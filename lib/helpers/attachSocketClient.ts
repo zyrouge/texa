@@ -1,4 +1,4 @@
-export const attackSocketClient = (content: string): string => {
+export const attachSocketClient = (content: string): string => {
     return content.replace(
         "</html>",
         `

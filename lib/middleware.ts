@@ -6,7 +6,7 @@ import mime from "mime-types";
 import socket from "socket.io";
 import { Config } from "./config";
 import { Renderer } from "./renderer";
-import { attackSocketClient } from "./helpers/attackSocketClient";
+import { attachSocketClient } from "./helpers/attachSocketClient";
 import { TexaEventEmitter, TexaEventSkeleton } from "./helpers/eventer";
 import { fileExists } from "./helpers/fileExists";
 
@@ -89,7 +89,7 @@ export class TexaServerMiddleware extends TexaEventEmitter<TexaServerMiddlewareE
 
                     res.writeHead(200, {
                         "Content-Type": "text/html; charset=utf-8",
-                    }).end(attackSocketClient(html));
+                    }).end(attachSocketClient(html));
 
                     return true;
                 }
