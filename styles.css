@@ -1,0 +1,156 @@
+:root {
+    --primary: rgb(255, 135, 56);
+    --primary-dark: rgb(245, 98, 0);
+    --text: rgb(39, 39, 39);
+    --alt-text: rgb(255, 255, 255);
+    --radius: 0.25rem;
+    --duration: 0.3s;
+
+    --h1: 2.5rem;
+    --h2: 2rem;
+    --h3: 1.75rem;
+    --h4: 1.5rem;
+    --h5: 1.3rem;
+    --h6: 1.1rem;
+}
+
+body {
+    font-family: "DM Sans", sans-serif;
+    color: var(--text);
+}
+
+.thick {
+    margin: 3px 0 0 0 !important;
+    font-family: "Bebas Neue", cursive;
+    font-weight: 400;
+}
+
+h1,
+.h1,
+h2,
+.h2,
+h3,
+.h3,
+h4,
+.h4,
+h5,
+.h5,
+h6,
+.h6,
+p,
+a {
+    margin: 0 0 0.5rem 0;
+    line-height: 1.5;
+}
+
+h1,
+.h1 {
+    font-size: var(--h1);
+}
+
+h2,
+.h2 {
+    font-size: var(--h2);
+}
+
+h3,
+.h3 {
+    font-size: var(--h3);
+}
+
+h4,
+.h4 {
+    font-size: var(--h4);
+}
+
+h5,
+.h5 {
+    font-size: var(--h5);
+}
+
+h6,
+.h6,
+p,
+a {
+    font-size: var(--h6);
+}
+
+a {
+    color: var(--primary);
+    text-decoration: none;
+    transition: var(--duration);
+}
+
+a:hover {
+    color: var(--primary-dark);
+}
+
+button,
+.button {
+    background-color: var(--primary);
+    color: var(--alt-text);
+    border: none;
+    padding: 0.5rem 1.4rem;
+    border-radius: var(--radius);
+    transition: var(--duration);
+}
+
+button:hover,
+.button:hover {
+    cursor: pointer;
+    color: var(--alt-text);
+    transform: translateY(-0.2rem);
+    background-color: var(--primary-dark);
+}
+
+li > p {
+    margin-bottom: 0;
+}
+
+pre {
+    position: relative;
+    color: var(--alt-text);
+    background-color: var(--text);
+    border-radius: var(--radius);
+    margin: 0.5rem 0;
+    padding: 1rem 1.4rem;
+}
+
+code {
+    font-family: "DM Mono", monospace;
+}
+
+code::after {
+    position: absolute;
+    font-size: 0.7rem;
+    top: 0.5rem;
+    right: 0.5rem;
+    opacity: 0.8;
+    content: attr(data-code-language);
+}
+
+.bold {
+    font-weight: bold;
+}
+
+nav {
+    margin: 0.4rem;
+}
+
+nav,
+nav div {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+hr {
+    color: var(--text);
+    opacity: 0.3;
+    margin: 0;
+}
+
+main {
+    margin: 3rem 5rem 4rem 5rem;
+}
