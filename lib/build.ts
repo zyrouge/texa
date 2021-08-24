@@ -66,5 +66,6 @@ export class TexaBuilder extends TexaEventEmitter<TexaBuilderEvents> {
         });
 
         await this.folder(this.config.contents);
+        await this.folder(this.config.public);
     }
 }
